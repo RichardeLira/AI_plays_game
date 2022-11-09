@@ -4,7 +4,6 @@ import keyboard
 import pyautogui as pg
 
 i = 0
-keys = []
 while True:
 
     # srint screen
@@ -15,39 +14,41 @@ while True:
 
     # save the images
     i += 1
-    path = "Dataset\Data\image_" + str(i) + r".png"
+    path = "Dataset\Data\image_" + str(i) + ".png"
     cv2.imwrite(path, screenshot)
 
     # read keyboard
     input = ''
     
     if(keyboard.is_pressed('a') and keyboard.is_pressed('w')):
-        input = 'aw'
+        input = '1,1,0,0'
     elif(keyboard.is_pressed('w') and keyboard.is_pressed('d')):
-        input = 'wd'
+        input = '1,0,0,1'
     elif(keyboard.is_pressed('s') and keyboard.is_pressed('d')):
-        input = 'sd'
+        input = '0,0,1,1'
     elif(keyboard.is_pressed('a') and keyboard.is_pressed('s')):
-        input = 'as'
+        input = '0,1,1,0'
     elif(keyboard.is_pressed('a')):
-        input = 'a'
+        input = '0,1,0,0'
     elif(keyboard.is_pressed('s')):
-        input = 's'
+        input = '0,0,1,0'
     elif(keyboard.is_pressed('d')):
-        input = 'd'
+        input = '0,0,0,1'
     elif(keyboard.is_pressed('w')):
-        input = 'w'
+        input = '1,0,0,0'
     else:
-        input = 'nk'
+        input = '0,0,0,0'
 
-    keys.append(input)
+    lable = "Dataset\Labels\image_" + str(i) + ".csv"
+    with open(lable, 'w') as file:
+        file.write(input)
+    
     print(input)
 
     # escape condition
     if cv2.waitKey(200) & 0xFF == 112: 
         break
 
-print(keys)
 cv2.destroyAllWindows()
 
 
