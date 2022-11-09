@@ -2,12 +2,13 @@ import cv2
 import numpy as np
 import keyboard
 import pyautogui as pg
+from PIL import ImageGrab
 
 i = 0
 while True:
 
     # srint screen
-    screenshot = np.array(pg.screenshot())
+    screenshot = np.array(ImageGrab.grab(bbox=(0,0,800,640)), dtype='uint8')
 
     # show prints
     cv2.imshow('Video', screenshot)
