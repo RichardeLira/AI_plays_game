@@ -4,57 +4,59 @@ import keyboard
 import pyautogui as pg
 from PIL import ImageGrab
 import time
+import pandas as pd
+import pickle as p
 
-i = 0
-lable = "Dataset\dataframe.csv"
-with open(lable, 'w') as file:
-    file.write("image_path,w,a,s,d\n")
-    while True:
+dt = pd.DataFrame()
 
-        # srint screen
-        screenshot = cv2.cvtColor(np.array(ImageGrab.grab(bbox=(450,130,1470,875)), dtype='uint8'), cv2.COLOR_BGR2GRAY)
-        screenshot = cv2.resize(screenshot, (640, 480))
-        # show prints
-        cv2.imshow('Video', screenshot)
+time.sleep(10)
+while True:
 
-        # save the images
-        i += 1
-        path = "Dataset\Data\image_" + str(i) + ".png"
-        cv2.imwrite(path, screenshot)
+    # print screen
+    screenshot = cv2.cvtColor(np.array(ImageGrab.grab(bbox=(450,160,1470,875)), dtype='uint8'), cv2.COLOR_BGR2GRAY)
+    screenshot = cv2.resize(screenshot, (640, 480))
 
-        # read keyboard
-        input = ''
+    # show prints
+    cv2.imshow('Video', screenshot)
 
-        if(keyboard.is_pressed('a') and keyboard.is_pressed('w')):
-            input = '1,1,0,0'
-        elif(keyboard.is_pressed('w') and keyboard.is_pressed('d')):
-            input = '1,0,0,1'
-        elif(keyboard.is_pressed('s') and keyboard.is_pressed('d')):
-            input = '0,0,1,1'
-        elif(keyboard.is_pressed('a') and keyboard.is_pressed('s')):
-            input = '0,1,1,0'
-        elif(keyboard.is_pressed('a')):
-            input = '0,1,0,0'
-        elif(keyboard.is_pressed('s')):
-            input = '0,0,1,0'
-        elif(keyboard.is_pressed('d')):
-            input = '0,0,0,1'
-        elif(keyboard.is_pressed('w')):
-            input = '1,0,0,0'
-        else:
-            input = '0,0,0,0'
+    # read keyboard
+    input = []
 
-        print(input)
-        image_path = "/image_" + str(i) + ".png"
-        file.write(image_path + "," + str(input) + "\n")
+    if(keyboard.is_pressed('a') and keyboard.is_pressed('w')):
+        input = [1,1,0,0]
+    elif(keyboard.is_pressed('w') and keyboard.is_pressed('d')):
+        input = [1,0,0,1]
+    elif(keyboard.is_pressed('s') and keyboard.is_pressed('d')):
+        input = [0,0,1,1]
+    elif(keyboard.is_pressed('a') and keyboard.is_pressed('s')):
+        input = [0,1,1,0]
+    elif(keyboard.is_pressed('a')):
+        input = [0,1,0,0]
+    elif(keyboard.is_pressed('s')):
+        input = [0,0,1,0]
+    elif(keyboard.is_pressed('d')):
+        input = [0,0,0,1]
+    elif(keyboard.is_pressed('w')):
+        input = [1,0,0,0]
+    else:
+        input = [0,0,0,0]
 
-        if(keyboard.is_pressed('p')):
-            time.sleep(20)
-        elif(keyboard.is_pressed('backspace')):
-            break
+    # add row in dataframe
+    dt = dt.append({'image':screenshot, 'lable':input}, ignore_index=True)
+    print(input)
+
+    # key binds
+    if(keyboard.is_pressed('p')):
+        time.sleep(20)
+    elif(keyboard.is_pressed('backspace')):
+        break
         
-        cv2.waitKey(200)
+    cv2.waitKey(200)
 
-    cv2.destroyAllWindows()
+# save dataset
+with open('Dataset/dataset.pkl', 'wb') as f:
+    p.dump(dt, f)
+
+cv2.destroyAllWindows()
 
 
