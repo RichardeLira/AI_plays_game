@@ -8,16 +8,20 @@ import pandas as pd
 import pickle as p
 
 dt = pd.DataFrame()
+i = 0
 
 time.sleep(10)
 while True:
 
     # print screen
-    screenshot = cv2.cvtColor(np.array(ImageGrab.grab(bbox=(450,160,1470,875)), dtype='uint8'), cv2.COLOR_BGR2GRAY)
-    screenshot = cv2.resize(screenshot, (640, 480))
+    screenshot = cv2.cvtColor(np.array(ImageGrab.grab(bbox=(450,160,1470,875)), dtype='uint8'), cv2.COLOR_BGR2RGB)
+    screenshot = cv2.resize(screenshot, (299, 299))
 
     # show prints
     cv2.imshow('Video', screenshot)
+
+    cv2.imwrite("Dataset\Data\image_" + str(i) + ".png", screenshot)
+    i += 1
 
     # read keyboard
     input = []
@@ -58,5 +62,3 @@ with open('Dataset/dataset.pkl', 'wb') as f:
     p.dump(dt, f)
 
 cv2.destroyAllWindows()
-
-
